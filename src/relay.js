@@ -465,13 +465,63 @@ async function handleSeeks(env, params) {
     return json({ count: seeks.length, seeks: seeks.slice(0, 50) });
 }
 
-// ─── Send message ───────────────────────────────
+// ─── Rate Limiting ──────────────────────────────
+
+const RATE_LIMITS = {
+    perSenderPerHour: 30,     // 每个发信人每小时最多 30 条
+    perReceiverPerHour: 100,  // 每个收信人每小时最多收 100 条
+    perSenderToSamePerHour: 10, // 同一对每小时最多 10 条
+};
+
+async function checkRateLimit(env, senderId, receiverId) {
+    const hour = new Date().toISOString().slice(0, 13); // 2026-03-08T02
+    const keys = {
+        sender: `rl:s:${senderId}:${hour}`,
+        receiver: `rl:r:${receiverId}:${hour}`,
+        pair: `rl:p:${senderId}:${receiverId}:${hour}`,
+    };
+
+    const [sCount, rCount, pCount] = await Promise.all([
+        env.INBOX.get(keys.sender).then(v => parseInt(v || '0')),
+        env.INBOX.get(keys.receiver).then(v => parseInt(v || '0')),
+        env.INBOX.get(keys.pair).then(v => parseInt(v || '0')),
+    ]);
+
+    if (pCount >= RATE_LIMITS.perSenderToSamePerHour) {
+        return { ok: false, error: `Rate limit: max ${RATE_LIMITS.perSenderToSamePerHour} messages/hour to the same agent`, retry_after: 3600 };
+    }
+    if (sCount >= RATE_LIMITS.perSenderPerHour) {
+        return { ok: false, error: `Rate limit: max ${RATE_LIMITS.perSenderPerHour} messages/hour per sender`, retry_after: 3600 };
+    }
+    if (rCount >= RATE_LIMITS.perReceiverPerHour) {
+        return { ok: false, error: `Rate limit: recipient inbox full (${RATE_LIMITS.perReceiverPerHour}/hour)`, retry_after: 3600 };
+    }
+
+    // Increment counters (1h TTL)
+    await Promise.all([
+        env.INBOX.put(keys.sender, String(sCount + 1), { expirationTtl: 3600 }),
+        env.INBOX.put(keys.receiver, String(rCount + 1), { expirationTtl: 3600 }),
+        env.INBOX.put(keys.pair, String(pCount + 1), { expirationTtl: 3600 }),
+    ]);
+
+    return { ok: true };
+}
+
+// ─── Send message (with rate limit + webhook push) ──
 
 async function handleSend(request, env, toAddress) {
     const agent = await env.AGENTS.get(toAddress);
     if (!agent) return json({ error: `Address not found: ${toAddress}` }, 404);
 
     const body = await request.json();
+    const senderId = body.from?.agent_id || body.from || 'anonymous';
+
+    // Rate limit check
+    if (senderId !== 'anonymous') {
+        const rl = await checkRateLimit(env, senderId, toAddress);
+        if (!rl.ok) return json({ error: rl.error, retry_after: rl.retry_after }, 429);
+    }
+
     const messageId = `msg-${crypto.randomUUID().slice(0, 12)}`;
     const message = {
         messageId, from: body.from || 'anonymous', to: toAddress,
@@ -486,16 +536,37 @@ async function handleSend(request, env, toAddress) {
     agentData.messageCount = (agentData.messageCount || 0) + 1;
     await env.AGENTS.put(toAddress, JSON.stringify(agentData));
 
+    // Webhook push — auto-notify the recipient agent
+    let webhookStatus = 'no_endpoint';
     if (agentData.endpoint) {
         try {
-            await fetch(`${agentData.endpoint}/yoap/request`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ protocol: 'YOAP/2.0', message_id: messageId, from: body.from || {}, to: { agent_id: toAddress }, task: body.task || {} }),
+            const whResp = await fetch(`${agentData.endpoint}/yoap/request`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    protocol: 'YOAP/2.0',
+                    type: 'message',
+                    message_id: messageId,
+                    from: body.from || {},
+                    to: { agent_id: toAddress },
+                    task: body.task || {},
+                    timestamp: message.timestamp,
+                }),
             });
-        } catch (_) { }
+            webhookStatus = whResp.ok ? 'webhook_delivered' : `webhook_failed_${whResp.status}`;
+        } catch (e) {
+            webhookStatus = `webhook_error`;
+        }
     }
 
-    return json({ messageId, status: 'delivered', message: `Delivered to ${toAddress}` });
+    return json({
+        messageId, status: 'delivered',
+        message: `Delivered to ${toAddress}`,
+        webhook: webhookStatus,
+        rate_limit: {
+            hint: 'Max 10 msgs/hour to same agent, 30/hour total',
+        },
+    });
 }
 
 // ─── Inbox ──────────────────────────────────────
