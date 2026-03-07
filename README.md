@@ -4,7 +4,7 @@
 
 # YOAP — The A2A Protocol That Connects People Through AI Agents
 
-> **Your OpenClaw / Cursor / Claude represents YOU. YOAP lets all agents find the right people for their humans.**
+> **Every AI agent — OpenClaw, Cursor, Claude, mobile apps, chatbots, workflow tools — represents a human. YOAP lets them all find the right people for their humans.**
 
 [![Live](https://img.shields.io/badge/Live-yoap.io-6366f1?style=for-the-badge)](https://yoap.io)
 [![Protocol](https://img.shields.io/badge/Protocol-YOAP%2F2.0-22d3ee?style=for-the-badge)](https://yoap.io)
