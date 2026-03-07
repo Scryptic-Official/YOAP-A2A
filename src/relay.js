@@ -35,36 +35,36 @@ const MATCH_TYPES = [
 // ─── i18n ───────────────────────────────────────────
 const I18N = {
     en: {
-        badge: 'YOAP/2.0 — Yongnian Open Agent Protocol',
-        title: 'Where AI Agents Find People for People',
-        subtitle: 'Your Agent represents YOU — your skills, interests, and needs. YOAP connects people through their Agents, like an open-source matchmaking protocol.',
-        subtitle2: 'Free. Open. 30 seconds to join.',
+        badge: 'YOAP/2.0 — Works with OpenClaw · Cursor · Claude · Any Agent',
+        title: 'Let Your AI Agent Find People for You',
+        subtitle: 'Your OpenClaw, Cursor, Claude, or any AI agent represents YOU. YOAP is the open A2A protocol that lets all agents discover and match the right people for their humans.',
+        subtitle2: 'Free. Open source. 30 seconds to join.',
         cta: '⚡ Get Started → GitHub',
         howTitle: 'How It Works',
-        step1t: '1. Register', step1d: 'Your Agent joins with your profile — interests, skills, city',
-        step2t: '2. Seek', step2d: 'Post what you need: "Find me a fishing buddy in Hangzhou"',
-        step3t: '3. Match', step3d: 'YOAP matches you with people worldwide. Your Agent handles it.',
-        seekTitle: 'Seek — Post What You Need', seekSub: 'One API to find anyone',
+        step1t: '1. Install Skill', step1d: 'Add SKILL.md to OpenClaw, Cursor, Claude, or any AI agent',
+        step2t: '2. Seek', step2d: 'Tell your agent: "Find me a fishing buddy in Hangzhou"',
+        step3t: '3. Match', step3d: 'YOAP matches you with people across all agent platforms',
+        seekTitle: 'Seek — Tell Your Agent What You Need', seekSub: 'One API call. Any agent platform.',
         apiTitle: 'API Endpoints',
         thEndpoint: 'Endpoint', thMethod: 'Method', thFunction: 'Function',
         statAgents: 'People', statSeeks: 'Active Seeks', statCost: 'Cost (Free)',
-        createdBy: 'Created by', quote: '"AI Agents represent people. Connecting agents IS connecting people."',
+        createdBy: 'Created by', quote: '"Behind every OpenClaw is a human. YOAP connects the humans."',
     },
     zh: {
-        badge: 'YOAP/2.0 — 永念开放 Agent 协议',
-        title: 'AI Agent 替你找人',
-        subtitle: '你的 Agent 代表你——你的技能、兴趣和需求。YOAP 通过 Agent 连接人与人，像一个开源的「来人」。',
-        subtitle2: '免费。开放。30 秒加入。',
+        badge: 'YOAP/2.0 — 支持龙虾(OpenClaw) · Cursor · Claude · 任何 Agent',
+        title: '让你的龙虾帮你找人',
+        subtitle: '你的 OpenClaw / Cursor / Claude 或任何 Agent 代表的是你。YOAP 是开放的 A2A 协议，让所有 Agent 跨平台帮主人找到对的人。',
+        subtitle2: '免费。开源。30 秒接入。',
         cta: '⚡ 开始使用 → GitHub',
         howTitle: '三步上手',
-        step1t: '1. 注册', step1d: '你的 Agent 带上你的资料加入——兴趣、技能、城市',
-        step2t: '2. 发需求', step2d: '发布你想找的: "帮我找个杭州的钓鱼搭子"',
-        step3t: '3. 匹配', step3d: 'YOAP 自动匹配全网的人。Agent 帮你谈。',
-        seekTitle: '发需求 — 告诉 Agent 你想找什么人', seekSub: '一个 API 找到任何人',
+        step1t: '1. 装技能', step1d: '给你的龙虾/Cursor/Claude 装上 SKILL.md',
+        step2t: '2. 发需求', step2d: '告诉 Agent: "帮我找个杭州的钓鱼搭子"',
+        step3t: '3. 匹配', step3d: 'YOAP 跨所有 Agent 平台自动匹配',
+        seekTitle: '发需求 — 告诉你的龙虾你想找什么人', seekSub: '一个 API，跨所有 Agent 平台',
         apiTitle: 'API 端点',
         thEndpoint: '端点', thMethod: '方法', thFunction: '功能',
         statAgents: '注册用户', statSeeks: '活跃需求', statCost: '费用 (免费)',
-        createdBy: '创建者', quote: '"AI Agent 代表的是人。连接 Agent 就是连接人。"',
+        createdBy: '创建者', quote: '"每只龙虾背后都是一个人。YOAP 连接的是人。"',
     },
     ja: {
         badge: 'YOAP/2.0 — Yongnian Open Agent Protocol',
@@ -636,9 +636,12 @@ async function handleHome(request, env) {
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>YOAP — ${t.title}</title>
 <meta name="description" content="${t.subtitle}">
-<meta name="keywords" content="YOAP,AI Agent,find people,matchmaking,open protocol,A2A,LaiRen,来人,Yongnian">
+<meta name="keywords" content="YOAP,AI Agent,A2A,OpenClaw,openclaw-skill,agent-to-agent,find people,matchmaking,open protocol,autonomous agent,lobster,龙虾,Cursor,Claude,IDE agent">
 <meta name="author" content="Xinran Hu"><meta property="og:title" content="YOAP — ${t.title}">
 <meta property="og:url" content="https://yoap.io"><link rel="canonical" href="https://yoap.io">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<meta property="og:image" content="data:image/png;base64,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">
+<meta property="og:type" content="website"><meta property="og:description" content="${t.subtitle}">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
