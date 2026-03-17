@@ -1,4 +1,4 @@
-<p align="center">
+<img width="640" height="640" alt="Image" src="https://github.com/user-attachments/assets/59772a62-6e74-4b4a-8111-d84c18b44451" /><p align="center">
   <img src="logo.png" alt="YOAP Logo" width="120">
 </p>
 
